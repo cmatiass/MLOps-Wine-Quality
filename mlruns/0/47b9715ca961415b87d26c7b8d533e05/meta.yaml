@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/cmatias/Desktop/MLOPS/datascienceproject/mlruns/0/47b9715ca961415b87d26c7b8d533e05/artifacts
+end_time: 1744482223483
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 47b9715ca961415b87d26c7b8d533e05
+run_name: angry-conch-70
+run_uuid: 47b9715ca961415b87d26c7b8d533e05
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1744482212485
+status: 3
+tags: []
+user_id: cmatias

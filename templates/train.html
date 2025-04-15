@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training in Progress | Wine Quality ML</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6f42c1;
+            --primary-dark: #5a32a3;
+            --secondary: #fd7e14;
+            --dark: #343a40;
+            --light: #f8f9fa;
+            --success: #28a745;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        .wine-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 3rem 0;
+            color: white;
+            margin-bottom: 2rem;
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-radius: 12px 12px 0 0 !important;
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            border: none;
+            border-radius: 50px;
+            padding: 10px 24px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(111, 66, 193, 0.3);
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(111, 66, 193, 0.4);
+        }
+        .wine-icon {
+            color: var(--secondary);
+            margin-right: 10px;
+        }
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.7; }
+        }
+        .animated {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        .loading-spinner {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            border-radius: 50%;
+            border: 8px solid rgba(111, 66, 193, 0.2);
+            border-top-color: var(--primary);
+            animation: spin 1.5s linear infinite;
+        }
+        .pulse-icon {
+            color: var(--primary);
+            font-size: 60px;
+            animation: pulse 2s infinite;
+        }
+        .training-step {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        .step-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: rgba(111, 66, 193, 0.1);
+            margin-right: 15px;
+            font-size: 20px;
+            color: var(--primary);
+        }
+        .step-content {
+            flex-grow: 1;
+        }
+        .step-status {
+            font-size: 24px;
+            width: 40px;
+            text-align: center;
+        }
+        .active-step {
+            box-shadow: 0 0 0 2px var(--primary);
+            transform: translateY(-3px);
+        }
+        .progress-container {
+            height: 6px;
+            background-color: rgba(111, 66, 193, 0.1);
+            border-radius: 3px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            width: 0%;
+            border-radius: 3px;
+            animation: progressAnimation 60s linear forwards;
+        }
+        @keyframes progressAnimation {
+            0% { width: 5%; }
+            20% { width: 25%; }
+            50% { width: 55%; }
+            70% { width: 75%; }
+            100% { width: 95%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--primary);">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-wine-glass-alt wine-icon"></i>Wine Quality ML
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="wine-header text-center">
+        <div class="container">
+            <h1 class="display-4 animated">Training in Progress</h1>
+            <p class="lead animated">Please wait while your wine quality prediction model is being trained</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Loading Card -->
+                <div class="card mb-4 animated">
+                    <div class="card-body text-center p-5">
+                        <div class="loading-spinner"></div>
+                        <h2 class="mb-4">Training Your Model</h2>
+                        <p class="lead mb-4">This process can take a few minutes. Please don't close this window.</p>
+                        <div class="progress-container">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <p class="text-muted">Estimated time remaining: <span id="timeRemaining">2-3 minutes</span></p>
+                    </div>
+                </div>
+
+                <!-- Training Steps Card -->
+                <div class="card mb-4 animated">
+                    <div class="card-header d-flex align-items-center">
+                        <i class="fas fa-cogs me-2 wine-icon"></i>
+                        <span>Training Process</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="training-steps">
+                            <div class="training-step active-step" id="step1">
+                                <div class="step-icon">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div class="step-content">
+                                    <h5 class="mb-1">Data Collection</h5>
+                                    <p class="mb-0 text-muted">Loading and preparing wine quality dataset</p>
+                                </div>
+                                <div class="step-status">
+                                    <i class="fas fa-sync-alt fa-spin text-primary"></i>
+                                </div>
+                            </div>
+                            <div class="training-step" id="step2">
+                                <div class="step-icon">
+                                    <i class="fas fa-broom"></i>
+                                </div>
+                                <div class="step-content">
+                                    <h5 class="mb-1">Data Preprocessing</h5>
+                                    <p class="mb-0 text-muted">Cleaning and preparing data for training</p>
+                                </div>
+                                <div class="step-status">
+                                    <i class="fas fa-hourglass text-muted"></i>
+                                </div>
+                            </div>
+                            <div class="training-step" id="step3">
+                                <div class="step-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div class="step-content">
+                                    <h5 class="mb-1">Model Training</h5>
+                                    <p class="mb-0 text-muted">Training machine learning algorithms</p>
+                                </div>
+                                <div class="step-status">
+                                    <i class="fas fa-hourglass text-muted"></i>
+                                </div>
+                            </div>
+                            <div class="training-step" id="step4">
+                                <div class="step-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="step-content">
+                                    <h5 class="mb-1">Model Evaluation</h5>
+                                    <p class="mb-0 text-muted">Validating model performance</p>
+                                </div>
+                                <div class="step-status">
+                                    <i class="fas fa-hourglass text-muted"></i>
+                                </div>
+                            </div>
+                            <div class="training-step" id="step5">
+                                <div class="step-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <div class="step-content">
+                                    <h5 class="mb-1">Model Deployment</h5>
+                                    <p class="mb-0 text-muted">Making the model available for predictions</p>
+                                </div>
+                                <div class="step-status">
+                                    <i class="fas fa-hourglass text-muted"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Information Card -->
+                <div class="card animated">
+                    <div class="card-header d-flex align-items-center">
+                        <i class="fas fa-info-circle me-2 wine-icon"></i>
+                        <span>Did you know?</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-light border">
+                            <p><strong>What's happening now:</strong></p>
+                            <ul>
+                                <li>Our system is training a machine learning model using ElasticNet regression</li>
+                                <li>The model is learning patterns from wine chemical properties to predict quality</li>
+                                <li>The training process includes hyperparameter tuning for optimal results</li>
+                                <li>Model performance is evaluated using metrics like RMSE, MAE and R²</li>
+                                <li>All training processes are logged with MLflow for tracking and reproducibility</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="container">
+            <p>© Wine Quality Prediction | Machine Learning Project</p>
+            <p class="small text-muted">Developed by <a href="https://github.com/cmatiass" target="_blank">Carlos Matías Sáez <i class="fab fa-github"></i></a></p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script>
+        // Simulate the training process with steps
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the elements
+            const step1 = document.getElementById('step1');
+            const step2 = document.getElementById('step2');
+            const step3 = document.getElementById('step3');
+            const step4 = document.getElementById('step4');
+            const step5 = document.getElementById('step5');
+            const timeRemaining = document.getElementById('timeRemaining');
+            
+            // Update progress based on time elapsed
+            setTimeout(function() {
+                // Step 1 completed
+                step1.querySelector('.step-status').innerHTML = '<i class="fas fa-check-circle text-success"></i>';
+                step1.classList.remove('active-step');
+                
+                // Step 2 active
+                step2.classList.add('active-step');
+                step2.querySelector('.step-status').innerHTML = '<i class="fas fa-sync-alt fa-spin text-primary"></i>';
+                timeRemaining.textContent = "1-2 minutes";
+            }, 5000);
+            
+            setTimeout(function() {
+                // Step 2 completed
+                step2.querySelector('.step-status').innerHTML = '<i class="fas fa-check-circle text-success"></i>';
+                step2.classList.remove('active-step');
+                
+                // Step 3 active
+                step3.classList.add('active-step');
+                step3.querySelector('.step-status').innerHTML = '<i class="fas fa-sync-alt fa-spin text-primary"></i>';
+                timeRemaining.textContent = "About 1 minute";
+            }, 15000);
+            
+            setTimeout(function() {
+                // Step 3 completed
+                step3.querySelector('.step-status').innerHTML = '<i class="fas fa-check-circle text-success"></i>';
+                step3.classList.remove('active-step');
+                
+                // Step 4 active
+                step4.classList.add('active-step');
+                step4.querySelector('.step-status').innerHTML = '<i class="fas fa-sync-alt fa-spin text-primary"></i>';
+                timeRemaining.textContent = "Less than 1 minute";
+            }, 30000);
+            
+            setTimeout(function() {
+                // Step 4 completed
+                step4.querySelector('.step-status').innerHTML = '<i class="fas fa-check-circle text-success"></i>';
+                step4.classList.remove('active-step');
+                
+                // Step 5 active
+                step5.classList.add('active-step');
+                step5.querySelector('.step-status').innerHTML = '<i class="fas fa-sync-alt fa-spin text-primary"></i>';
+                timeRemaining.textContent = "Almost done...";
+            }, 45000);
+            
+            // When all steps are completed, redirect to the success page
+            setTimeout(function() {
+                // Redirect to the results page
+                window.location.href = "/training-complete";
+            }, 60000);
+        });
+    </script>
+</body>
+</html>

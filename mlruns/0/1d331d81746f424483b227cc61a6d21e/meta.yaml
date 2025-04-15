@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/cmatias/Desktop/MLOPS/datascienceproject/mlruns/0/1d331d81746f424483b227cc61a6d21e/artifacts
+end_time: 1741276933125
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 1d331d81746f424483b227cc61a6d21e
+run_name: respected-shrew-229
+run_uuid: 1d331d81746f424483b227cc61a6d21e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1741276922616
+status: 3
+tags: []
+user_id: cmatias

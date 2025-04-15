@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/cmatias/Desktop/MLOPS/datascienceproject/mlruns/0/4821677cf22d4ae1b2f4cfc55d984a4b/artifacts
+end_time: 1744712328216
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 4821677cf22d4ae1b2f4cfc55d984a4b
+run_name: treasured-bird-754
+run_uuid: 4821677cf22d4ae1b2f4cfc55d984a4b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1744712317691
+status: 3
+tags: []
+user_id: cmatias

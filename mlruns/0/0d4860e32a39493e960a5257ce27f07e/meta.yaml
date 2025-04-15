@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/cmatias/Desktop/MLOPS/datascienceproject/mlruns/0/0d4860e32a39493e960a5257ce27f07e/artifacts
+end_time: 1744712805444
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 0d4860e32a39493e960a5257ce27f07e
+run_name: sassy-cub-749
+run_uuid: 0d4860e32a39493e960a5257ce27f07e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1744712793904
+status: 3
+tags: []
+user_id: cmatias

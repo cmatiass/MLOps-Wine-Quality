@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Results | Wine Quality ML</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6f42c1;
+            --primary-dark: #5a32a3;
+            --secondary: #fd7e14;
+            --dark: #343a40;
+            --light: #f8f9fa;
+            --success: #28a745;
+            --info: #17a2b8;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        .wine-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 3rem 0;
+            color: white;
+            margin-bottom: 2rem;
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-radius: 12px 12px 0 0 !important;
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            border: none;
+            border-radius: 50px;
+            padding: 10px 24px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(111, 66, 193, 0.3);
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(111, 66, 193, 0.4);
+        }
+        .btn-outline-primary {
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            padding: 10px 24px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+        }
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(111, 66, 193, 0.4);
+        }
+        .wine-icon {
+            color: var(--secondary);
+            margin-right: 10px;
+        }
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animated {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        .prediction-display {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 1.5rem 0;
+            text-align: center;
+            animation: float 4s ease-in-out infinite;
+        }
+        .prediction-card {
+            padding: 2rem;
+            text-align: center;
+        }
+        .prediction-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .prediction-description {
+            padding: 1rem;
+            background-color: rgba(111, 66, 193, 0.05);
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+        .quality-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1rem;
+            background-color: var(--primary);
+        }
+        .wine-details {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        .detail-label {
+            font-weight: 500;
+            color: #666;
+        }
+        .detail-value {
+            font-weight: 600;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--primary);">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-wine-glass-alt wine-icon"></i>Wine Quality ML
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="wine-header text-center">
+        <div class="container">
+            <h1 class="display-4 animated">Prediction Results</h1>
+            <p class="lead animated">Here's the quality prediction for your wine parameters</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Prediction Result Card -->
+                <div class="card mb-4 animated">
+                    <div class="card-header d-flex align-items-center">
+                        <i class="fas fa-chart-line me-2 wine-icon"></i>
+                        <span>Wine Quality Prediction</span>
+                    </div>
+                    <div class="card-body prediction-card">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-wine-glass-alt prediction-icon"></i>
+                        </div>
+                        <h3 class="mb-3">Your prediction result is:</h3>
+                        <div class="prediction-display">
+                            {{prediction}}
+                        </div>
+                        <div class="quality-badge">
+                            Wine Quality Score
+                        </div>
+                        <div class="prediction-description">
+                            <p><strong>What does this mean?</strong></p>
+                            <p>Wine quality is scored on a scale from 0 to 10, where:</p>
+                            <ul>
+                                <li>0-3: Below average quality</li>
+                                <li>4-6: Average quality</li>
+                                <li>7-10: Premium quality</li>
+                            </ul>
+                            <p>Our machine learning model has analyzed the chemical properties of your wine sample to determine its likely quality rating.</p>
+                        </div>
+                        <div class="wine-details">
+                            <h5 class="mb-3">Prediction Information</h5>
+                            <div class="detail-item">
+                                <span class="detail-label">Model Type</span>
+                                <span class="detail-value">ElasticNet Regression</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Prediction Time</span>
+                                <span class="detail-value">{{prediction_time|default('0.05')}} seconds</span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center gap-3 mt-4">
+                            <a href="/" class="btn btn-primary">
+                                <i class="fas fa-redo me-2"></i>New Prediction
+                            </a>
+                            <a href="/train" class="btn btn-outline-primary">
+                                <i class="fas fa-sync-alt me-2"></i>Retrain Model
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interpretation Card -->
+                <div class="card mb-4 animated">
+                    <div class="card-header d-flex align-items-center">
+                        <i class="fas fa-info-circle me-2 wine-icon"></i>
+                        <span>Interpreting Your Result</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-primary">
+                            <p class="mb-0"><strong>How to interpret your wine quality score:</strong></p>
+                        </div>
+                        <div class="row g-4 mt-2">
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-body text-center">
+                                        <h4 class="text-danger mb-3">3 or below</h4>
+                                        <i class="fas fa-thumbs-down mb-3 text-danger" style="font-size: 2rem;"></i>
+                                        <p class="mb-0">Lower quality wine with potential flaws in taste or aroma</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-body text-center">
+                                        <h4 class="text-warning mb-3">4 - 6</h4>
+                                        <i class="fas fa-star-half-alt mb-3 text-warning" style="font-size: 2rem;"></i>
+                                        <p class="mb-0">Average quality wine, acceptable for regular consumption</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-body text-center">
+                                        <h4 class="text-success mb-3">7 or above</h4>
+                                        <i class="fas fa-award mb-3 text-success" style="font-size: 2rem;"></i>
+                                        <p class="mb-0">High quality wine with excellent balance and characteristics</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Next Steps Card -->
+                <div class="card animated">
+                    <div class="card-header d-flex align-items-center">
+                        <i class="fas fa-steps me-2 wine-icon"></i>
+                        <span>Next Steps</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <i class="fas fa-flask me-3" style="font-size: 1.5rem; color: var(--primary);"></i>
+                                            <h5 class="mb-0">Try Different Parameters</h5>
+                                        </div>
+                                        <p class="mb-0">Adjust the chemical properties and see how they affect the predicted quality.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <i class="fas fa-brain me-3" style="font-size: 1.5rem; color: var(--primary);"></i>
+                                            <h5 class="mb-0">Improve the Model</h5>
+                                        </div>
+                                        <p class="mb-0">Retrain with new data to enhance prediction accuracy.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <a href="/" class="btn btn-primary">
+                                <i class="fas fa-home me-2"></i>Return to Homepage
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <div class="container">
+            <p>© Wine Quality Prediction | Machine Learning Project</p>
+            <p class="small text-muted">Developed by <a href="https://github.com/cmatiass" target="_blank">Carlos Matías Sáez <i class="fab fa-github"></i></a></p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
