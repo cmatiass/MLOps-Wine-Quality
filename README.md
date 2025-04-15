@@ -1,5 +1,8 @@
-![image](https://github.com/user-attachments/assets/93b28629-a48a-4b78-b375-876535cc30e4)
+# ✨ Try it by yourself! ✨
 
+👉 [Check out the live demo here!](https://wine-quality-ml-zi5a.onrender.com) 🍷
+
+![alt text](image.png)
 
 # 🚀 Data Science Project - Structured ML Pipeline
 
