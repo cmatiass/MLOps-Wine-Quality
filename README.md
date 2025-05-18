@@ -2,7 +2,8 @@
 
 👉 [Check out the live demo here!](https://wine-quality-ml-zi5a.onrender.com) 🍷
 
-![alt text](image-1.png)
+![image](https://github.com/user-attachments/assets/50a4ef7f-ca7f-4e73-8abd-2f2326eb2323)
+
 
 # 🚀 Data Science Project - Structured ML Pipeline
 
